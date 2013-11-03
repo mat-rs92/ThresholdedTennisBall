@@ -58,8 +58,8 @@ int main(int argc,char* argv[]){
 		//visualizzo su thresholdWindow l'immagine filtrata
 		imshow(thresholdWindow,thresholded);
 		
-		//tempo di attesa prima di passare al frame successivo
-		waitKey(33);
+		//premi un pulsante per uscire oppure attendi il tempo di attesa prima di passare al frame successivo
+		if(waitKey(33) >= 0) break;
 	}
 	
 	
