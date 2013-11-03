@@ -19,13 +19,26 @@ int V_MAX = 256;
 //finestre
 const string mainGui="Immagine acquisita";
 const string thresholdWindow="Immagine rilevata";
+const string settingWindow="Imposta soglia";
+
+//action listener per gli slider -> INUTILISSIMO MA NECESSARIO
+void onTrackbarSlide(int, void*){}
+
+//metodo che crea gli slider
+void createSlider(){
+	namedWindow(settingWindow,0);
+	//metodo che crea le trackbar(label, finestra, valore da cambiare, valore massimo,action listener)
+	createTrackbar("H-min",settingWindow, &H_MIN, H_MAX, onTrackbarSlide);
+    createTrackbar("S-min",settingWindow, &S_MIN, S_MAX,onTrackbarSlide);
+    createTrackbar("V-min",settingWindow, &V_MIN, V_MAX,onTrackbarSlide);
+}
 
 
 int main(int argc,char* argv[]){
 	//avvio della videocamera
 	VideoCapture capture;
 	//0--> webcam default (interna)
-	//0--> webcam esterna
+	//1--> webcam esterna
 	capture.open(0);
 	//matrice su cui verranno salvati i frame catturati
 	Mat cameraFeed;
@@ -37,7 +50,9 @@ int main(int argc,char* argv[]){
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);
 
-
+	
+	//creo la finestra con gli slider
+	createSlider();
 	
 	while(1){
 		//catturo un frame della webcam
