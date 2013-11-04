@@ -20,6 +20,7 @@ int V_MAX = 256;
 const string mainGui="Immagine acquisita";
 const string thresholdWindow="Immagine rilevata";
 const string settingWindow="Imposta soglia";
+const string blurWindow="Immagin con filtro Blur";
 
 //action listener per gli slider -> INUTILISSIMO MA NECESSARIO
 void onTrackbarSlide(int, void*){
@@ -51,11 +52,15 @@ int main(int argc,char* argv[]){
 	Mat hsvFrame;
 	//matrice su cui salvo l'immagine filtrata
 	Mat thresholded;
+	//matrice per mostrare l'immagine con il filtro blur
+	Mat frameBlur;
+	
+	
 	//imposto la dimensione dei frame da catturare
 	capture.set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);
-
 	
+
 	//creo la finestra con gli slider
 	createSlider();
 	
@@ -63,20 +68,32 @@ int main(int argc,char* argv[]){
 		//catturo un frame della webcam
 		capture.read(cameraFeed);
 		
+
+		//applico il gaussian blur
+		medianBlur(cameraFeed,frameBlur,5);
+
 		//cambio lo spazio dei colori RGB-->HSV
 		//cvtColor(sorgente, destinazione, operazione)
-		cvtColor(cameraFeed,hsvFrame,COLOR_BGR2HSV);
+		cvtColor(frameBlur,hsvFrame,COLOR_BGR2HSV);
+
 
 		
 		//filtro hsvFrame cercando solo un determinato range di colori
 		//void inRange(InputArray src, InputArray lowerbound, InputArray upperbound, OutputArray dst)
 		inRange(hsvFrame, Scalar(H_MIN,S_MIN,V_MIN),Scalar(H_MAX,S_MAX,V_MAX),thresholded);
 		
+		//applico l'erosione
+		//erode(InputArray src, OutputArray dst, InputArray kernel, Point anchor=Point(-1,-1), int iterations=1,
+		//int borderType=BORDER_CONSTANT, const Scalar& borderValue=morphologyDefaultBorderValue() )
+		erode(thresholded, thresholded, 0, Point(-1, -1), 2, 1, 1);
+		dilate(thresholded, thresholded, 0, Point(-1, -1), 2, 1, 1);
 		
 		//visualizzo su mainGui il frame originale
 		imshow(mainGui,cameraFeed);
 		//visualizzo su thresholdWindow l'immagine filtrata
 		imshow(thresholdWindow,thresholded);
+		//visualizzo su blurWindow l'immagine con il filtro blur
+		imshow(blurWindow,frameBlur);
 		
 		//premi un pulsante per uscire oppure attendi il tempo di attesa prima di passare al frame successivo
 		if(waitKey(33) >= 0) break;
