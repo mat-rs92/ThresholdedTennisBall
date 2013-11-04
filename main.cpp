@@ -22,7 +22,9 @@ const string thresholdWindow="Immagine rilevata";
 const string settingWindow="Imposta soglia";
 
 //action listener per gli slider -> INUTILISSIMO MA NECESSARIO
-void onTrackbarSlide(int, void*){}
+void onTrackbarSlide(int, void*){
+	//non c'è bisogno di fare nulla	
+}
 
 //metodo che crea gli slider
 void createSlider(){
@@ -31,6 +33,9 @@ void createSlider(){
 	createTrackbar("H-min",settingWindow, &H_MIN, H_MAX, onTrackbarSlide);
     createTrackbar("S-min",settingWindow, &S_MIN, S_MAX,onTrackbarSlide);
     createTrackbar("V-min",settingWindow, &V_MIN, V_MAX,onTrackbarSlide);
+    createTrackbar("H-max",settingWindow, &H_MAX, H_MAX, onTrackbarSlide);
+   createTrackbar("S-max",settingWindow, &S_MAX, S_MAX,onTrackbarSlide);
+   createTrackbar("V-max",settingWindow, &V_MAX, V_MAX,onTrackbarSlide);
 }
 
 
@@ -65,7 +70,7 @@ int main(int argc,char* argv[]){
 		
 		//filtro hsvFrame cercando solo un determinato range di colori
 		//void inRange(InputArray src, InputArray lowerbound, InputArray upperbound, OutputArray dst)
-		inRange(hsvFrame, Scalar(20,100,100),Scalar(30,255,255),thresholded);
+		inRange(hsvFrame, Scalar(H_MIN,S_MIN,V_MIN),Scalar(H_MAX,S_MAX,V_MAX),thresholded);
 		
 		
 		//visualizzo su mainGui il frame originale
