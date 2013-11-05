@@ -32,12 +32,12 @@ void onTrackbarSlide(int, void*){
 void createSlider(){
         namedWindow(settingWindow,0);
         //metodo che crea le trackbar(label, finestra, valore da cambiare, valore massimo,action listener)
-        createTrackbar("H-min",settingWindow, &H_MIN, H_MAX, onTrackbarSlide);
-            createTrackbar("S-min",settingWindow, &S_MIN, S_MAX,onTrackbarSlide);
-            createTrackbar("V-min",settingWindow, &V_MIN, V_MAX,onTrackbarSlide);
-            createTrackbar("H-max",settingWindow, &H_MAX, H_MAX, onTrackbarSlide);
-            createTrackbar("S-max",settingWindow, &S_MAX, S_MAX,onTrackbarSlide);
-            createTrackbar("V-max",settingWindow, &V_MAX, V_MAX,onTrackbarSlide);
+        createTrackbar("H-min",settingWindow, &H_MIN, 256, onTrackbarSlide);
+        createTrackbar("S-min",settingWindow, &S_MIN, 256,onTrackbarSlide);
+        createTrackbar("V-min",settingWindow, &V_MIN, 256,onTrackbarSlide);
+        createTrackbar("H-max",settingWindow, &H_MAX, 256, onTrackbarSlide);
+        createTrackbar("S-max",settingWindow, &S_MAX, 256,onTrackbarSlide);
+        createTrackbar("V-max",settingWindow, &V_MAX, 256,onTrackbarSlide);
 }
 
 
