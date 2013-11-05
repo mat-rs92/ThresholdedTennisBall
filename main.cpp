@@ -32,11 +32,11 @@ void createSlider(){
 	namedWindow(settingWindow,0);
 	//metodo che crea le trackbar(label, finestra, valore da cambiare, valore massimo,action listener)
 	createTrackbar("H-min",settingWindow, &H_MIN, H_MAX, onTrackbarSlide);
-    createTrackbar("S-min",settingWindow, &S_MIN, S_MAX,onTrackbarSlide);
-    createTrackbar("V-min",settingWindow, &V_MIN, V_MAX,onTrackbarSlide);
-    createTrackbar("H-max",settingWindow, &H_MAX, H_MAX, onTrackbarSlide);
-    createTrackbar("S-max",settingWindow, &S_MAX, S_MAX,onTrackbarSlide);
-    createTrackbar("V-max",settingWindow, &V_MAX, V_MAX,onTrackbarSlide);
+    	createTrackbar("S-min",settingWindow, &S_MIN, S_MAX,onTrackbarSlide);
+    	createTrackbar("V-min",settingWindow, &V_MIN, V_MAX,onTrackbarSlide);
+    	createTrackbar("H-max",settingWindow, &H_MAX, H_MAX, onTrackbarSlide);
+    	createTrackbar("S-max",settingWindow, &S_MAX, S_MAX,onTrackbarSlide);
+    	createTrackbar("V-max",settingWindow, &V_MAX, V_MAX,onTrackbarSlide);
 }
 
 
@@ -82,7 +82,7 @@ int main(int argc,char* argv[]){
 		//--------applico l'erosione e la dilatazione---------
 		//questa matrice  indica che i 3x3 pixel intorno ad ogni punto da analizzare sono un rettangolo
 		//in pratica per ogni pixel erodo il rettangolo 3x3 intorno 
-		//IN PRATICA: con l'erosione rimuovo tutti i puntini piccoli che compaiono
+		//IN PRATICA: con l'erosione rimuovo tutti i puntini piccoli che compaiono riducendo il rumore
 		Mat rectErosione = getStructuringElement(MORPH_RECT,Size(3,3));
 		erode(thresholded, thresholded,rectErosione);
 		erode(thresholded, thresholded,rectErosione);
