@@ -99,7 +99,8 @@ int main(int argc,char* argv[]){
 		//imshow(blurWindow,frameBlur);
 		
 		//premi un pulsante per uscire oppure attendi il tempo di attesa prima di passare al frame successivo
-		if(waitKey(33) >= 0) break;
+		char c=waitKey(33);
+		if(c == 27) break;
 	}
 	
 	
