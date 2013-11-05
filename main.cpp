@@ -7,9 +7,11 @@
 using namespace cv;
 
 //--------------IMPOSTAZIONI------------
+
 //imposto la risoluzione di acquisizione
 const int FRAME_WIDTH = 640;
 const int FRAME_HEIGHT = 480;
+
 //valori preimpostati per tracciare la pallina, cambiabili con le trackbar
 int H_MIN = 26;
 int S_MIN = 75;
@@ -17,6 +19,7 @@ int V_MIN = 67;
 int H_MAX = 256;
 int S_MAX = 256;
 int V_MAX = 256;
+
 //finestre
 const string mainGui="Immagine acquisita";
 const string thresholdWindow="Immagine rilevata";
@@ -31,6 +34,7 @@ void onTrackbarSlide(int, void*){
 //metodo che crea gli slider
 void createSlider(){
         namedWindow(settingWindow,0);
+        
         //metodo che crea le trackbar(label, finestra, valore da cambiare, valore massimo,action listener)
         createTrackbar("H-min",settingWindow, &H_MIN, 256, onTrackbarSlide);
         createTrackbar("S-min",settingWindow, &S_MIN, 256,onTrackbarSlide);
@@ -42,19 +46,26 @@ void createSlider(){
 
 
 int main(int argc,char* argv[]){
+	
         //avvio della videocamera
         VideoCapture capture;
+        
         //0--> webcam default (interna)
         //1--> webcam esterna
         capture.open(0);
+        
         //matrice su cui verranno salvati i frame catturati
         Mat cameraFeed;
+        
         //matrice su cui salvo l'immagine HSV
         Mat hsvFrame;
+        
         //matrice su cui salvo l'immagine filtrata
         Mat thresholded;
+        
         //matrice per mostrare l'immagine con il filtro blur
         Mat frameBlur;
+        
 	//matrice per Hough Transform
 	Mat Hough;
 	vector<Vec3f> circles;
@@ -89,6 +100,7 @@ int main(int argc,char* argv[]){
                 Mat rectErosione = getStructuringElement(MORPH_RECT,Size(3,3));
                 erode(thresholded, thresholded,rectErosione);
                 erode(thresholded, thresholded,rectErosione);
+                
                 //dilato ogni pixel rilevato in un rect 8x8
                 Mat rectDilataz = getStructuringElement( MORPH_RECT,Size(8,8));
                 dilate(thresholded, thresholded, rectDilataz);
@@ -99,15 +111,17 @@ int main(int argc,char* argv[]){
 		//cvtColor(Hough, Hough, CV_BGR2GRAY);
 		
 		//Hough Transform
-		
 		HoughCircles(thresholded, circles, CV_HOUGH_GRADIENT, 2, thresholded.rows/4, 100, 40, 20, 200 );
+		
 		/// Draw the circles detected
 		  for( size_t i = 0; i < circles.size(); i++ )
 		  {
 		      Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
 		      int radius = cvRound(circles[i][2]);
+		      
 		      // circle center
 		      circle( cameraFeed, center, 3, Scalar(0,255,0), -1, 8, 0 );
+		      
 		      // circle outline
 		      circle( cameraFeed, center, radius, Scalar(0,0,255), 3, 8, 0 );
 		   }
@@ -115,6 +129,7 @@ int main(int argc,char* argv[]){
                 		
                 //visualizzo su mainGui il frame originale
                 imshow(mainGui,cameraFeed);
+                
                 //visualizzo su thresholdWindow l'immagine filtrata
                 imshow(thresholdWindow,thresholded);
                 //visualizzo su blurWindow l'immagine con il filtro blur
@@ -122,7 +137,7 @@ int main(int argc,char* argv[]){
 
 		
                 
-                //premi un pulsante per uscire oppure attendi il tempo di attesa prima di passare al frame successivo
+                //premi esc per uscire oppure attendi il tempo di attesa prima di passare al frame successivo
                 char c=waitKey(33);
 		if(c == 27) break;
         	}
